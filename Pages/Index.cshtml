@@ -1,0 +1,271 @@
+﻿@page
+@model IndexModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    ViewData["Title"] = "Home page";
+    ViewData["Page"] = "Executive";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <link href="~/datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="~/datepicker/less/datepicker.less" rel="stylesheet/less" />
+
+    <style type="text/css">
+        .form, input {
+            background-color: white !important;
+        }
+
+        .change-height-of-dropdown {
+            min-height: auto !important;
+            height: 1em;
+        }
+
+        /*.datepicker,
+        .table-condensed {
+            width: 255px;
+        }*/
+    </style>
+    <form id="form1" method='post'>
+        <script src="~/js/multiselect/semantic.min.js"></script>
+        <link href="~/js/multiselect/semantic.min.css" rel="stylesheet" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                SetIframe();
+
+                $('#campaignsFilter')
+                    .dropdown({
+                        placeholder: 'All'
+                    });
+                $('#callTypeFilter')
+                    .dropdown({
+                        placeholder: 'All'
+                    });
+                $('#skillFilter')
+                    .dropdown({
+                        placeholder: 'All'
+                    });
+                $('#agentGroupFilter')
+                    .dropdown({
+                        placeholder: 'All'
+                    });
+                $('#ddlTimeFrames')
+                    .dropdown({});
+                $('#campaignTypeFilter')
+                    .dropdown({
+                        placeholder: 'All',
+                    });
+                $('#agentFilter')
+                    .dropdown({
+                        placeholder: 'All'
+                    });
+
+                $('#ddlTimeFrames').on('change', function () {
+                    $('#txtAnyDate').val("");
+                    $('#txtSearchFromDate').val("");
+                    $('#txtSearchToDate').val("");
+                    if ($('#ddlTimeFrames').val() == "daterange") {
+                        $("#rowSpecificDate").css("display", "none");
+                        $("#rowDateRange").css("display", "block");
+                    }
+                    else if ($('#ddlTimeFrames').val() == "specificdate") {
+                        $("#rowDateRange").css("display", "none");
+                        $("#rowSpecificDate").css("display", "block");
+                    }
+                    else {
+                        $("#rowDateRange").css("display", "none");
+                        $("#rowSpecificDate").css("display", "none");
+                        SetIframe();
+                    }
+                });
+
+                $('#txtAnyDate').datepicker().on('changeDate', function (ev) {
+                    var ad = $(this).val();
+                    if (ad != "") {
+                        $('#txtSearchFromDate').val("");
+                        $('#txtSearchToDate').val("");
+                        SetIframe();
+                    }
+                });
+
+                $('#txtSearchToDate').datepicker().on('changeDate', function (ev) {
+                    $('#txtAnyDate').val("");
+                    SetIframe();
+                });
+
+                $('#txtSearchFromDate').datepicker().on('changeDate', function (ev) {
+                    $('#txtAnyDate').val("");
+                });
+
+                $('#campaignsFilter').on('change', function () {
+                    SetIframe();
+                });
+
+                $('#callTypeFilter').on('change', function () {
+                    SetIframe();
+                });
+
+                $('#skillFilter').on('change', function () {
+                    SetIframe();
+                });
+
+                $('#agentGroupFilter').on('change', function () {
+                    SetIframe();
+                });
+
+                $('#campaignTypeFilter').on('change', function () {
+                    SetIframe();
+                });
+
+                $('#agentFilter').on('change', function () {
+                    SetIframe();
+                });
+
+                function SetIframe() {
+                    $('#iframeReports').attr('src', '/ExecutiveReport?tf=' + $("#ddlTimeFrames").val() + '&ad=' + $('#txtAnyDate').val() + '&sfd=' + $('#txtSearchFromDate').val()
+                        + "&std=" + $('#txtSearchToDate').val() + '&cp=' + $('#campaignsFilter').val() + '&ct=' + $('#callTypeFilter').val() + '&s=' + $('#skillFilter').val() +
+                        '&ag=' + $('#agentGroupFilter').val() + '&a=' + $('#agentFilter').val() + '&cpt=' + $('#campaignTypeFilter').val());
+                }
+            });
+        </script>
+    </form>
+    <div class="row">
+        <div class="col-lg-3">
+            <h5>Time Frame</h5>
+            <select name="ddlTimeFrames" id="ddlTimeFrames" class="ui fluid search selection dropdown">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="last30days">Last 30 Days</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+                <option value="previousweek">Previous Week</option>
+                <option value="previousmonth">Previous Month</option>
+                <option value="specificdate">Specific Date</option>
+                <option value="daterange">Date Range</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <h5>Campaign Type</h5>
+            @Html.DropDownListFor(m => m.campaignTypeFilter, new SelectList(Model.campaignTypeFilter, "", "", ""), new { @class = "ui fluid multiple search normal selection dropdown", @multiple = "" })
+        </div>
+        <div class="col-lg-3">
+            <h5>Campaign</h5>
+            @Html.DropDownListFor(m => m.campaignsFilter, new SelectList(Model.campaignsFilter, "", "", ""), new { @class = "ui fluid multiple search normal selection dropdown", @multiple = "" })
+        </div>
+        <div class="col-lg-3">
+            <h5>Agent Group</h5>
+            @Html.DropDownListFor(m => m.agentGroupFilter, new SelectList(Model.agentGroupFilter, "", "", ""), new { @class = "ui fluid multiple search normal selection dropdown", @multiple = "" })
+        </div>
+    </div>
+    <div class="row" id="rowSpecificDate" style="display:none;">
+        <div class="col-lg-3">
+            <table class="table table-borderless">
+                <tr>
+                    <td>Select Date</td>
+                    <td><input type="text" class="form-control  input-lg" value="" id="txtAnyDate" data-date-format="yyyy-mm-dd" readonly style="width: 50%" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row" id="rowDateRange" style="display: none;">
+        <div class="col-lg-3">
+            <table class="table table-borderless">
+                <tr>
+                    <td>
+                        From
+                    </td>
+                    <td>
+                        <input type="text" class="form-control  input-lg" value="" id="txtSearchFromDate" data-date-format="yyyy-mm-dd" readonly style="width: 50%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        To
+                    </td>
+                    <td>
+                        <input type="text" class="form-control  input-lg" value="" id="txtSearchToDate" data-date-format="yyyy-mm-dd" readonly style="width: 50%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <script src="~/datepicker/js/bootstrap-datepicker.js"></script>
+    <script>
+
+        $(function () {
+
+            $('#txtAnyDate').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+
+            $('#txtSearchFromDate').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+
+            $('#txtSearchToDate').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+
+            var anyDate = $('#txtAnyDate').datepicker().on('changeDate', function (ev) {
+                anyDate.hide();
+            }).data('datepicker');
+
+            var checkin = $('#txtSearchFromDate').datepicker({
+                onRender: function (date) {
+                    return date.valueOf() < now.valueOf() ? 'disabled' : '';
+                }
+            }).on('changeDate', function (ev) {
+                if (ev.date.valueOf() > checkout.date.valueOf()) {
+                    var newDate = new Date(ev.date)
+                    newDate.setDate(newDate.getDate() + 1);
+                    checkout.setValue(newDate);
+                }
+                checkin.hide();
+                $('#txtSearchToDate')[0].focus();
+            }).data('datepicker');
+
+            var checkout = $('#txtSearchToDate').datepicker().on('changeDate', function (ev) {
+
+                if ($('#txtSearchFromDate').val() == "") {
+                    $('#txtSearchFromDate')[0].focus();
+                    $('#txtSearchToDate').val("");
+                    checkout.hide();
+                }
+                else {
+                    if (checkout.date.valueOf() < checkin.date.valueOf())
+                        checkout.setValue("");
+                    else
+                        checkout.hide();
+                }
+            }).data('datepicker');
+
+        });
+    </script>
+    <div class="row form-group">
+        <div class="col-12">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <h5>Agent</h5>
+            @Html.DropDownListFor(m => m.agentFilter, new SelectList(Model.agentFilter, "", "", ""), new { @class = "ui fluid multiple search normal selection dropdown", @multiple = "" })
+        </div>
+        <div class="col-lg-3">
+            <h5>Skill</h5>
+            @Html.DropDownListFor(m => m.skillFilter, new SelectList(Model.skillFilter, "", "", ""), new { @class = "ui fluid multiple search normal selection dropdown", @multiple = "" })
+        </div>
+        <div class="col-lg-3">
+            <h5>Call Type</h5>
+            @Html.DropDownListFor(m => m.callTypeFilter, new SelectList(Model.callTypeFilter, "", "", ""), new { @class = "ui fluid multiple search normal selection dropdown", @multiple = "" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top:10px;">
+            <iframe id="iframeReports" style="width: 100%; position: relative;" marginheight="0" marginwidth="0" frameborder="0" height="6200"></iframe>
+        </div>
+    </div>
+}

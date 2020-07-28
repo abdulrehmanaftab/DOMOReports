@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <div class="container-fluid">
+        <div class="row nav-charts">
+            <div class="col-6">
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        @if (ViewData["Page"] != null && ViewData["Page"].ToString() == "Executive" && User.IsInRole("Executive"))
+                        {
+                            <a class="nav-item nav-link active" asp-area="" asp-page="/Index">Executive</a>
+                        }
+                        else if(User.IsInRole("Executive"))
+                        {
+                            <a class="nav-item nav-link" asp-area="" asp-page="/Index">Executive</a>
+                        }
+                        @if (ViewData["Page"] != null && ViewData["Page"].ToString() == "Inbound" && User.IsInRole("Executive"))
+                        {
+                            <a class="nav-item nav-link active" asp-area="" asp-page="/Inbound">Inbound</a>
+                        }
+                         else if(User.IsInRole("Executive"))
+                        {
+                            <a class="nav-item nav-link" asp-area="" asp-page="/Inbound">Inbound</a>
+                        }
+                        @if (ViewData["Page"] != null && ViewData["Page"].ToString() == "Outbound" && User.IsInRole("Executive"))
+                        {
+                            <a class="nav-item nav-link active" asp-area="" asp-page="/Outbound">Outbound</a>
+                        }
+                         else if(User.IsInRole("Executive"))
+                        {
+                            <a class="nav-item nav-link" asp-area="" asp-page="/Outbound">Outbound</a>
+                        }
+                        @*@if (ViewData["Page"] != null && ViewData["Page"].ToString() == "UserGroup" && (User.IsInRole("Executive") ||  User.IsInRole("Supervisor")))
+                        {
+                            <a class="nav-item nav-link active" asp-area="" asp-page="/UserGroup">User Group</a>
+                        }
+                        else if(User.IsInRole("Executive") ||  User.IsInRole("Supervisor"))
+                        {
+                            <a class="nav-item nav-link" asp-area="" asp-page="/UserGroup">User Group</a>
+                        }
+                        @if (ViewData["Page"] != null && ViewData["Page"].ToString() == "Agent" && (User.IsInRole("Executive") ||  User.IsInRole("Agent") ||  User.IsInRole("Supervisor")))
+                        {
+                            <a class="nav-item nav-link active" asp-area="" asp-page="/Agent">Agent</a>
+                        }
+                        else if(User.IsInRole("Executive") ||  User.IsInRole("Agent") ||  User.IsInRole("Supervisor"))
+                        {
+                            <a class="nav-item nav-link" asp-area="" asp-page="/Agent">Agent</a>
+                        }*@
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,26 @@
+﻿<div class="container-fluid">
+    <div class="row nav-charts">
+        <div class="col-3">
+            <nav>
+                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                    @if (ViewData["Page"] != null && ViewData["Page"].ToString() == "Users")
+                    {
+                        <a class="nav-item nav-link active" asp-controller="Admin" asp-action="Index">Users</a>
+                    }
+                    else
+                    {
+                        <a class="nav-item nav-link" asp-controller="Admin" asp-action="Index">Users</a>
+                    }
+                    @if (ViewData["Page"] != null && ViewData["Page"].ToString() == "Roles")
+                    {
+                        <a class="nav-item nav-link active" asp-controller="Role" asp-action="Index">Roles</a>
+                    }
+                    else
+                    {
+                <a class="nav-item nav-link" asp-controller="Role" asp-action="Index">Roles</a>
+                    }
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>

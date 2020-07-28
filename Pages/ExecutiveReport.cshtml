@@ -1,0 +1,13 @@
+﻿@page
+@model ProgrammaticFiltering.Pages.ExecutiveReportModel
+@{
+    Layout = null;
+    ViewData["Page"] = "Executive";
+}
+
+<form id="formExecutive" action="@Model.url" method="post">
+    <input type="hidden" name="embedToken" value="@Model.embedToken" />
+</form>
+<script>
+    document.getElementById("formExecutive").submit();
+</script>

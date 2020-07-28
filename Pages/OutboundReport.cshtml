@@ -1,0 +1,16 @@
+﻿@page
+@model ProgrammaticFiltering.OutboundReportModel
+@{
+    Layout = null;
+    ViewData["Page"] = "Outbound";
+}
+
+
+<form id="formOutbound" action="@Model.url" method="post">
+    <input type="hidden" name="embedToken" value="@Model.embedToken" />
+</form>
+<script>
+    document.getElementById("formOutbound").submit();
+</script>
+
+
